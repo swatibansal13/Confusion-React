@@ -3,6 +3,7 @@ import { Card, CardImg, CardText, CardBody, CardTitle, BreadcrumbItem, Breadcrum
  Label, Row } from 'reactstrap';
 import {Link} from 'react-router-dom';
 import { Control, LocalForm, Errors } from 'react-redux-form';
+import { addComment } from '../redux/ActionCreators';
 
 const required = (val) => val && val.length;
 const maxLength = (len) => (val) => !(val) || (val.length<=len);
@@ -29,12 +30,10 @@ class RenderDish extends Component {
 
 
     handleSubmitForm(values) {
-        console.log("Comments Submitted: " +JSON.stringify(values))
-        alert("Comments Submitted: " +JSON.stringify(values))  
+        this.props.addComment(this.props.dish.id, values.rating, values.yourname, values.comment);
     }
 
     CommentForm=()=> {
-        console.log(this.state)
         return(
     
             <Modal isOpen={this.state.isModalOpen} toggle={this.toggleModalForm}>
@@ -79,13 +78,13 @@ class RenderDish extends Component {
     
     }
 
-    RenderComments(comments)  {
-        if(comments!=null) {
+    RenderComments=(props)=>  {
+        if(props.comments!=null) {
             return(
                 <div className ="col-12 col-md-5 m-1">
                     <h4>Comments</h4>
                     <ul className="list-unstyled">
-                        {comments.map((comment)=>{    
+                        {props.comments.map((comment)=>{    
                                 return(
                                     <div>
                                         <li key={comment.id}>
@@ -134,11 +133,13 @@ class RenderDish extends Component {
                          </CardBody>
                     </Card>  
                     </div> 
-                    {this.RenderComments(comments)}
+                    {/* {this.RenderComments(comments)} */}
+                     <this.RenderComments comments={this.props.comments} addComment={this.props.addComment}
+                        dishId={this.props.dish.id}/>
                     </div>
                 </div>
-                {this.CommentForm()}
-                {/* <this.CommentForm/> */}
+                
+                <this.CommentForm dishId={dish.id} addComment={addComment}/>
                 </>
             );
         }
