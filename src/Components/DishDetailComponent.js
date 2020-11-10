@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
-import { Card, CardImg, CardText, CardBody, CardTitle, BreadcrumbItem, Breadcrumb, Button, Modal, ModalBody, ModalHeader,
- Label, Row } from 'reactstrap';
+import { Card, CardImg, CardText, CardBody, CardTitle, BreadcrumbItem, Breadcrumb, Button, Modal, ModalBody, ModalHeader, Label, Row } from 'reactstrap';
 import {Link} from 'react-router-dom';
 import { Control, LocalForm, Errors } from 'react-redux-form';
 import { addComment } from '../redux/ActionCreators';
+import { Loading } from './LoadingComponent';
 
 const required = (val) => val && val.length;
 const maxLength = (len) => (val) => !(val) || (val.length<=len);
@@ -111,8 +111,28 @@ class RenderDish extends Component {
     const dish=this.props.dish;
     const comments=this.props.comments;
 
-        if(dish!=null) {
-            return(
+    if(this.props.isLoading) {
+        return (
+            <div className="container">
+                <div className="row">
+                    <Loading/>
+                </div>
+            </div>
+        )
+    }
+
+    else if(this.props.errMess) {
+        return (
+            <div className="container">
+                <div className="row">
+                    <h4>{this.props.errMess}</h4>
+                </div>
+            </div>
+        )
+    }
+
+    else if(dish!=null) {
+        return(
                 <>
                     <div className="container">
                     <div className="row">
@@ -141,8 +161,8 @@ class RenderDish extends Component {
                 
                 <this.CommentForm dishId={dish.id} addComment={addComment}/>
                 </>
-            );
-        }
+        );
+    }
 
         else {
             return(
@@ -154,113 +174,3 @@ class RenderDish extends Component {
 
 export default RenderDish;
 
-// import React, {Component} from 'react';
-// import { Card, CardImg, CardText, CardBody, CardTitle, BreadcrumbItem, Breadcrumb, Button, Modal, ModalBody, ModalHeader,
-// Form,FormGroup, Label, Input } from 'reactstrap';
-// import {Link} from 'react-router-dom';
-
-// const toggleModal= false;
-
-// function toggleModalForm() {
-//     toggleModal=true;
-// }
-
-// function handleLoginForm(event) {
-//     alert("Usename: "+this.username.value + "Password: " + this.password.value + "Remember: " + this.remember.checked);
-//     event.preventDefault();
-
-// }
-
-// function CommentForm() {
-//     return(
-//         <Modal toggle={toggleModalForm}>
-//             <ModalHeader toggle={toggleModalForm}>Submit Comment</ModalHeader>
-//             <ModalBody>
-//                 <Form onSubmit={handleLoginForm}>
-//                     <FormGroup>
-//                         <Label>Rating</Label>
-//                         <Input type="text"/>
-//                     </FormGroup>
-//                     <FormGroup>
-//                         <Label>Your Name</Label>
-//                         <Input type="text"/>
-//                     </FormGroup>
-//                     <FormGroup>
-//                         <Label>Comment</Label>
-//                         <Input type="textarea"/>
-//                     </FormGroup>
-//                     <Button type="submit" value="submit" color="primary">Submit</Button>
-//                 </Form>
-//             </ModalBody>
-//         </Modal>
-
-//     );
-
-// }
-
-// function RenderComments({comments})  {
-//         if(comments!=null) {
-//             return(
-//                 <div className ="col-12 col-md-5 m-1">
-//                     <h4>Comments</h4>
-//                     <ul className="list-unstyled">
-//                         {comments.map((comment)=>{    
-//                                 return(
-//                                     <div>
-//                                         <li key={comment.id}>
-//                                         <p>{comment.comment}</p>
-//                                         <p>--{comment.author}, {new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'short',
-//                                          day: '2-digit'}).format(new Date(Date.parse(comment.date)))} </p>
-//                                         </li>
-//                                     </div>
-//                                 );
-//                             })
-//                         } 
-//                     </ul>
-//                     <Button outline onClick={CommentForm}><span className="fa fa-sign-in fa-lg"></span>Submit Comment</Button>
-//                 </div>
-//             );
-//         }
-//         else{
-//             return (
-//                 <div></div>
-//             );
-//         }
-//     }
-
-//     function RenderDish({dish,comments}) {
-//         if(dish!=null) {
-//             return(
-//                 <div className="container">
-//                     <div className="row">
-//                     <Breadcrumb>
-//                         <BreadcrumbItem><Link to='/menu'>Menu</Link></BreadcrumbItem>
-//                         <BreadcrumbItem active>{dish.name}</BreadcrumbItem>
-//                     </Breadcrumb>
-//                     <div className="col-12">
-//                         <h3>{dish.name}</h3>
-//                         <hr/>
-//                     </div>
-//                     <div className="col-12 col-md-5 m-1">
-//                     <Card>
-//                         <CardImg width="100%" src={dish.image} alt={dish.name} />
-//                         <CardBody>
-//                              <CardTitle>{dish.name}</CardTitle>
-//                              <CardText>{dish.description}</CardText>
-//                          </CardBody>
-//                     </Card>  
-//                     </div> 
-//                     <RenderComments comments={comments}/>
-//                     </div>
-//                 </div>
-//             );
-//         }
-
-//         else {
-//             return(
-//                 <div></div>
-//             );
-//         }
-//     }
-
-// export default RenderDish;

@@ -1,8 +1,18 @@
-import {DISHES} from '../shared/dishes';
+import { act } from 'react-dom/test-utils';
+import * as ActionTypes from './ActionTypes';
 
+export const Dishes = (state = {isLoading: true, errMess: null, dishes:[]}, action) => {
 
-export const Dishes = (state = DISHES, action) => {
     switch (action.type) {    
+        case ActionTypes.ADD_DISHES:
+            return {...state, isLoading: false, erMess: null, dishes: action.payload}
+
+        case ActionTypes.DISHES_LOADING:
+            return {...state, isLoading:true, erMess: null, dishes: []}
+
+        case ActionTypes.DISHES_FAILED:
+            return {...state, isLoading: false, erMess: action.payload, dishes: []}            
+            
         default:
             return state;
     }
