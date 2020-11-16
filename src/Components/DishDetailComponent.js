@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import { Card, CardImg, CardText, CardBody, CardTitle, BreadcrumbItem, Breadcrumb, Button, Modal, ModalBody, ModalHeader, Label, Row } from 'reactstrap';
 import {Link} from 'react-router-dom';
 import { Control, LocalForm, Errors } from 'react-redux-form';
-import { addComment } from '../redux/ActionCreators';
+import {  postComment } from '../redux/ActionCreators';
 import { Loading } from './LoadingComponent';
 import { baseUrl } from '../shared/baseUrl';
 
@@ -31,7 +31,7 @@ class RenderDish extends Component {
 
 
     handleSubmitForm(values) {
-        this.props.addComment(this.props.dish.id, values.rating, values.yourname, values.comment);
+        this.props.postComment(this.props.dish.id, values.rating, values.yourname, values.comment);
     }
 
     CommentForm=()=> {
@@ -156,12 +156,12 @@ class RenderDish extends Component {
                     </Card>  
                     </div> 
                     {/* {this.RenderComments(comments)} */}
-                     <this.RenderComments comments={this.props.comments} addComment={this.props.addComment}
+                     <this.RenderComments comments={this.props.comments} postComment={this.props.postComment}
                         dishId={this.props.dish.id}/>
                     </div>
                 </div>
                 
-                <this.CommentForm dishId={dish.id} addComment={addComment}/>
+                <this.CommentForm dishId={dish.id} postComment={postComment}/>
                 </>
         );
     }
