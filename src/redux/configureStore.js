@@ -6,6 +6,7 @@ import { Leaders } from './leaders';
 import thunk from'redux-thunk';
 import { createForms } from "react-redux-form";
 import { InitialFeedback } from './Forms';
+import logger from 'redux-logger';
 //import logger from 'redux-logger';
 
 export const ConfigureStore = () => {
@@ -20,7 +21,7 @@ export const ConfigureStore = () => {
             })
         }),
 
-        applyMiddleware(thunk)
+        applyMiddleware(thunk,logger)
     );
 
     return store;
