@@ -1,10 +1,12 @@
 import React from 'react';
 import { Breadcrumb, BreadcrumbItem, Card, CardBody, CardHeader, Media } from 'reactstrap';
 import { Link } from 'react-router-dom';
+import { baseUrl } from '../shared/baseUrl';
+import { FadeTransform} from 'react-animation-components';
 
 function About(props) {
 
-    const leaders = props.leaders.map((leader) => {
+    const leaders = props.leaders.leaders.map((leader) => {
         return (
             <p>Leader {leader.name}</p>
         );
@@ -12,17 +14,22 @@ function About(props) {
 
     const RenderLeader = (leader) => {
         return(
-            <div key={leader.id} className="col-12">
-                <Media tag="li">
-                    <Media className="col-12 col-sm-2" object src ={leader.image} alt={leader.name} height="100" width="0"/>
-                    <Media body className="col12 col-sm-10">
-                        <Media heading>{leader.name}</Media>
-                        <Media subheading>{leader.designation}</Media>
-                        <p>{leader.description}</p>
-                    </Media>
-                </Media>
-                <br/>
-            </div>
+            <FadeTransform in 
+                transformProps = {{
+                    exitTranform: 'scale(0.5) translateY(-50%)'
+                }}>
+                    <div key={leader.id} className="col-12">
+                        <Media tag="li">
+                            <Media className="col-12 col-sm-2" object src ={baseUrl + leader.image} alt={leader.name} height="100" width="0"/>
+                            <Media body className="col12 col-sm-10">
+                                <Media heading>{leader.name}</Media>
+                                <Media subheading>{leader.designation}</Media>
+                                <p>{leader.description}</p>
+                            </Media>
+                        </Media>
+                        <br/>
+                    </div>
+            </FadeTransform>
         );
     }
 
@@ -83,7 +90,7 @@ function About(props) {
                 </div>
                 <div className="col-12">
                     <Media list>
-                        {props.leaders.map(leader =>RenderLeader(leader))}
+                        {props.leaders.leaders.map(leader =>RenderLeader(leader))}
                     </Media>
                 </div>
             </div>
