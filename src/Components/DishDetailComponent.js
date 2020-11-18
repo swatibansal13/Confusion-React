@@ -5,6 +5,7 @@ import { Control, LocalForm, Errors } from 'react-redux-form';
 import {  postComment } from '../redux/ActionCreators';
 import { Loading } from './LoadingComponent';
 import { baseUrl } from '../shared/baseUrl';
+import { FadeTranform, Fade, Stagger } from "react-animation-components";
 
 const required = (val) => val && val.length;
 const maxLength = (len) => (val) => !(val) || (val.length<=len);
@@ -85,18 +86,23 @@ class RenderDish extends Component {
                 <div className ="col-12 col-md-5 m-1">
                     <h4>Comments</h4>
                     <ul className="list-unstyled">
-                        {props.comments.map((comment)=>{    
-                                return(
-                                    <div>
-                                        <li key={comment.id}>
-                                        <p>{comment.comment}</p>
-                                        <p>--{comment.author}, {new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'short',
-                                         day: '2-digit'}).format(new Date(Date.parse(comment.date)))} </p>
-                                        </li>
-                                    </div>
-                                );
-                            })
-                        } 
+                        <Stagger in>
+                            {props.comments.map((comment)=>{    
+                                    return(
+                                        <Fade in>
+                                            <div>
+                                                <li key={comment.id}>
+                                                <p>{comment.comment}</p>
+                                                <p>--{comment.author}, {new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'short',
+                                                day: '2-digit'}).format(new Date(Date.parse(comment.date)))} </p>
+                                                </li>
+                                            </div>
+                                        </Fade>
+                                    );
+                                })
+                            } 
+                        </Stagger>
+                        
                     </ul>
                     <Button outline onClick={this.toggleModalForm}><span className="fa fa-pencil fa-lg"></span> Submit Comment</Button>
                 </div>
@@ -146,14 +152,18 @@ class RenderDish extends Component {
                         <hr/>
                     </div>
                     <div className="col-12 col-md-5 m-1">
-                    <Card>
-                        
-                    <CardImg top src={baseUrl + dish.image} alt={dish.name} />
-                        <CardBody>
-                             <CardTitle>{dish.name}</CardTitle>
-                             <CardText>{dish.description}</CardText>
-                         </CardBody>
-                    </Card>  
+                    <FadeTranform in 
+                         tranformProps= {{
+                            exitTranform: 'scale(0.5) translateY(-50%)'
+                    }}>
+                            <Card>
+                            <CardImg top src={baseUrl + dish.image} alt={dish.name} />
+                                <CardBody>
+                                    <CardTitle>{dish.name}</CardTitle>
+                                    <CardText>{dish.description}</CardText>
+                                </CardBody>
+                            </Card>     
+                    </FadeTranform>
                     </div> 
                     {/* {this.RenderComments(comments)} */}
                      <this.RenderComments comments={this.props.comments} postComment={this.props.postComment}
